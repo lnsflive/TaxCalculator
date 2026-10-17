@@ -1,47 +1,98 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sales Tax Calculator</title>
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Calculate sales tax with a saved custom rate. Defaults to the Texas maximum combined rate of 8.25%.">
+        <title>Sales Tax Calculator</title>
         <link rel="stylesheet" href="src/style.css">
+        <script src="src/script.js" defer></script>
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        <main class="container">
+            <section class="content" aria-labelledby="page-title">
+                <header class="app-header">
+                    <p class="eyebrow">Texas default · 8.25%</p>
+                    <h1 id="page-title">Sales Tax Calculator</h1>
+                    <p>Enter a price to see the tax and final total. Change the saved rate when your local rate differs.</p>
+                </header>
 
-        <div class="container">
-            <div class="content">
-                <div class="logo">Sales Tax Calculator</div>
-                <div class="row">
-                    <label>Price</label>
-                    <input type="number" placeholder="$0.00" class="price">
-                </div>
-                <div class="row">
-                    <label>Sales Tax</label>
-                    <input type="text" placeholder="8.25%" class="salesTax" readonly>
-                </div>
-                <div class="row">
-                    <label>Tax Total</label>
-                    <input type="text" placeholder="$0.00" class="taxTotal" readonly>
-                </div>
-                <div class="row">
-                    <label>Total</label>
-                    <input type="text" placeholder="$0.00" class="total" readonly>
-                </div>
-                <button class="reset" onclick="reset()">RESET</button>
-            </div>
-        </div>
+                <div class="workspace">
+                    <section class="calculator" aria-label="Calculator">
+                        <div class="price-group">
+                            <label for="price">Purchase price</label>
+                            <div class="money-field">
+                                <span aria-hidden="true">$</span>
+                                <input
+                                    id="price"
+                                    class="price"
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    inputmode="decimal"
+                                    placeholder="0.00"
+                                    aria-describedby="price-error"
+                                    autocomplete="off"
+                                >
+                            </div>
+                            <p class="field-error" id="price-error" aria-live="polite"></p>
+                        </div>
 
+                        <dl class="results" aria-live="polite">
+                            <div class="result-row">
+                                <dt id="sales-tax-label">Sales tax · Texas</dt>
+                                <dd><output class="sales-tax" aria-labelledby="sales-tax-label">8.25%</output></dd>
+                            </div>
+                            <div class="result-row">
+                                <dt id="tax-total-label">Tax amount</dt>
+                                <dd><output class="tax-total" aria-labelledby="tax-total-label">$0.00</output></dd>
+                            </div>
+                            <div class="result-row total-row">
+                                <dt id="total-label">Total</dt>
+                                <dd><output class="total" aria-labelledby="total-label">$0.00</output></dd>
+                            </div>
+                        </dl>
 
-        <script src="src/jquery-3.6.0.slim.min.js"></script>
-        <script src="src/script.js" async defer></script>
+                        <button class="reset" type="button">Reset amount</button>
+                    </section>
+
+                    <details class="tax-settings">
+                        <summary>
+                            <span>Tax settings</span>
+                            <span class="summary-note">Saved on this device</span>
+                        </summary>
+                        <div class="settings-content">
+                            <label for="tax-location">Location label</label>
+                            <input id="tax-location" class="setting-input" type="text" maxlength="60" autocomplete="off">
+
+                            <label for="tax-rate">Combined tax rate</label>
+                            <div class="rate-field">
+                                <input
+                                    id="tax-rate"
+                                    class="setting-input"
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    step="0.001"
+                                    inputmode="decimal"
+                                    aria-describedby="rate-help rate-error"
+                                >
+                                <span aria-hidden="true">%</span>
+                            </div>
+                            <p class="field-error" id="rate-error" aria-live="polite"></p>
+                            <div class="rate-context" id="rate-help">
+                                <p>Texas charges 6.25% statewide. Local taxes can raise the combined rate to 8.25%.</p>
+                                <a
+                                    href="https://mycpa.cpa.state.tx.us/atj/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >Look up an address on the Texas Comptroller site</a>
+                            </div>
+                            <p class="save-status" id="save-status" aria-live="polite"></p>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </main>
     </body>
 </html>
